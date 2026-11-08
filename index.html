@@ -1,9 +1,11 @@
+```html
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI WT8X — Minecraft Mod</title>
+
 <style>
   :root {
     --bg: #171a17;
@@ -72,7 +74,10 @@
     font-weight: 600;
   }
 
-  .subtitle { color: #aeb8aa; margin: 0; }
+  .subtitle {
+    color: #aeb8aa;
+    margin: 0;
+  }
 
   .content {
     display: grid;
@@ -106,16 +111,13 @@
     font-size: 13px;
   }
 
-  .meta span:nth-child(odd) { color: var(--muted); }
-
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 12px;
+  .meta span:nth-child(odd) {
+    color: var(--muted);
   }
 
   .download {
+    display: inline-block;
+    margin-top: 12px;
     padding: 11px 18px;
     background: #78975f;
     color: #10170e;
@@ -126,34 +128,12 @@
     font-size: 14px;
   }
 
-  .download:hover { background: #8aaa70; }
-
-  .secondary {
-    padding: 9px 12px;
-    background: #252d25;
-    color: #aeb8aa;
-    border: 1px solid #455045;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 12px;
+  .download:hover {
+    background: #8aaa70;
   }
 
-  .secondary:hover {
-    background: #303a30;
-    color: #d9dfd6;
-  }
-
-  button:disabled {
-    opacity: .5;
-    cursor: wait;
-  }
-
-  .status {
-    margin-top: 12px;
-    min-height: 20px;
-    color: #9eaf96;
-    font: 12px/1.5 Consolas, monospace;
-    overflow-wrap: anywhere;
+  .download:active {
+    background: #698653;
   }
 
   .notice {
@@ -173,7 +153,9 @@
     font-size: 12px;
   }
 
-  #filePicker { display: none; }
+  #filePicker {
+    display: none;
+  }
 
   #transient-code {
     margin-top: 25px;
@@ -187,12 +169,22 @@
     user-select: none;
   }
 
-  #transient-code.visible { opacity: .78; }
+  #transient-code.visible {
+    opacity: .78;
+  }
 
   @media (max-width: 680px) {
-    .content { grid-template-columns: 1fr; }
-    main { margin-top: 22px; }
-    .intro { padding: 23px 20px; }
+    .content {
+      grid-template-columns: 1fr;
+    }
+
+    main {
+      margin-top: 22px;
+    }
+
+    .intro {
+      padding: 23px 20px;
+    }
   }
 </style>
 </head>
@@ -201,7 +193,10 @@
 
 <header>
   <div class="brand">WT8X / Mod Archive</div>
-  <div class="nav">Minecraft Java Edition &nbsp; / &nbsp; Mod releases &nbsp; / &nbsp; AI WT8X</div>
+  <div class="nav">
+    Minecraft Java Edition &nbsp; / &nbsp;
+    Mod releases &nbsp; / &nbsp; AI WT8X
+  </div>
 </header>
 
 <main>
@@ -209,7 +204,9 @@
   <section class="intro">
     <div class="eyebrow">Community build · Mod release</div>
     <h1>AI WT8X</h1>
-    <p class="subtitle">An experimental client-side addition for Minecraft.</p>
+    <p class="subtitle">
+      An experimental client-side addition for Minecraft.
+    </p>
   </section>
 
   <div class="content">
@@ -217,12 +214,19 @@
     <section class="panel">
       <h2>About this mod</h2>
 
-      <p>AI WT8X is a small experimental mod currently being tested. This page contains the latest packaged build and basic release information.</p>
+      <p>
+        AI WT8X is a small experimental mod currently being tested.
+        This page contains the latest packaged build and basic release information.
+      </p>
 
-      <p class="muted">Some features may change between builds. Make a backup of your world before testing unfamiliar mods.</p>
+      <p class="muted">
+        Some features may change between builds.
+        Make a backup of your world before testing unfamiliar mods.
+      </p>
 
       <div class="notice">
-        Please check that the file matches your Minecraft installation and mod loader before launching the game.
+        Please check that the file matches your Minecraft installation
+        and mod loader before launching the game.
       </div>
     </section>
 
@@ -238,15 +242,8 @@
         <span>Status</span><span>Experimental</span>
       </div>
 
-      <div class="actions">
-        <button class="download" id="downloadBtn">Download mod</button>
-        <button class="secondary" id="changeBtn">Change file</button>
-      </div>
-
-      <div class="status" id="downloadStatus">Checking package...</div>
-
-      <button class="secondary" id="removeBtn" style="margin-top:9px;display:none">
-        Remove saved package
+      <button class="download" id="downloadBtn">
+        Download mod
       </button>
 
       <p class="muted" style="font-size:11px;margin-top:14px">
@@ -254,6 +251,7 @@
       </p>
 
     </aside>
+
   </div>
 
   <footer>
@@ -265,16 +263,12 @@
 
 </main>
 
-<input id="filePicker" type="file" accept=".jar,application/java-archive">
+<input id="filePicker" type="file" accept=".jar">
 
 <script>
 (() => {
   const picker = document.getElementById('filePicker');
   const button = document.getElementById('downloadBtn');
-  const changeButton = document.getElementById('changeBtn');
-  const removeButton = document.getElementById('removeBtn');
-  const status = document.getElementById('downloadStatus');
-  const secret = document.getElementById('transient-code');
 
   const DB_NAME = 'WT8X_ARCHIVE';
   const DB_VERSION = 1;
@@ -297,21 +291,28 @@
         }
       };
 
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
+      request.onsuccess = () => {
+        resolve(request.result);
+      };
+
+      request.onerror = () => {
+        reject(request.error);
+      };
     });
   }
 
   function savePackage(file) {
     return new Promise((resolve, reject) => {
-      const transaction = db.transaction(STORE_NAME, 'readwrite');
+      const transaction = db.transaction(
+        STORE_NAME,
+        'readwrite'
+      );
+
       const store = transaction.objectStore(STORE_NAME);
 
       store.put({
         blob: file,
-        name: file.name,
-        type: file.type,
-        lastModified: file.lastModified
+        name: file.name
       }, PACKAGE_KEY);
 
       transaction.oncomplete = resolve;
@@ -322,83 +323,50 @@
 
   function loadPackage() {
     return new Promise((resolve, reject) => {
-      const transaction = db.transaction(STORE_NAME, 'readonly');
-      const request = transaction.objectStore(STORE_NAME).get(PACKAGE_KEY);
+      const transaction = db.transaction(
+        STORE_NAME,
+        'readonly'
+      );
 
-      request.onsuccess = () => resolve(request.result || null);
-      request.onerror = () => reject(request.error);
+      const request = transaction
+        .objectStore(STORE_NAME)
+        .get(PACKAGE_KEY);
+
+      request.onsuccess = () => {
+        resolve(request.result || null);
+      };
+
+      request.onerror = () => {
+        reject(request.error);
+      };
     });
-  }
-
-  function deletePackage() {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction(STORE_NAME, 'readwrite');
-
-      transaction.objectStore(STORE_NAME).delete(PACKAGE_KEY);
-
-      transaction.oncomplete = resolve;
-      transaction.onerror = () => reject(transaction.error);
-    });
-  }
-
-  function updateInterface() {
-    if (selectedPackage) {
-      status.textContent = 'Package ready: ' + selectedPackage.name;
-      removeButton.style.display = 'inline-block';
-      button.disabled = false;
-    } else {
-      status.textContent = 'No package selected. Press F to select a file.';
-      removeButton.style.display = 'none';
-      button.disabled = false;
-    }
   }
 
   async function initialize() {
     try {
-      if (!('indexedDB' in window)) {
-        throw new Error('IndexedDB unavailable');
-      }
-
       db = await openDatabase();
       selectedPackage = await loadPackage();
-
-      updateInterface();
-
     } catch (error) {
       console.error(error);
-      status.textContent = 'Local storage unavailable. Select a package again.';
     }
   }
 
   async function handleFile(file) {
-    if (!file) return;
-
-    status.textContent = 'Saving package...';
-    changeButton.disabled = true;
+    if (!file || !db) return;
 
     try {
-      if (!db) {
-        throw new Error('Database unavailable');
-      }
-
       await savePackage(file);
 
       selectedPackage = {
         blob: file,
-        name: file.name,
-        type: file.type,
-        lastModified: file.lastModified
+        name: file.name
       };
-
-      updateInterface();
 
     } catch (error) {
       console.error(error);
-      status.textContent = 'Could not save package. Check browser storage.';
-    } finally {
-      changeButton.disabled = false;
-      picker.value = '';
     }
+
+    picker.value = '';
   }
 
   document.addEventListener('keydown', event => {
@@ -419,58 +387,48 @@
   });
 
   picker.addEventListener('change', () => {
-    const file = picker.files && picker.files[0];
+    const file = picker.files?.[0];
 
-    if (file) handleFile(file);
-  });
-
-  changeButton.addEventListener('click', () => {
-    picker.click();
+    if (file) {
+      handleFile(file);
+    }
   });
 
   button.addEventListener('click', () => {
-    if (!selectedPackage) {
-      status.textContent = 'Package unavailable. Press F to select the mod file.';
-      return;
-    }
+    if (!selectedPackage) return;
 
-    const objectUrl = URL.createObjectURL(selectedPackage.blob);
+    const url = URL.createObjectURL(
+      selectedPackage.blob
+    );
+
     const link = document.createElement('a');
 
-    link.href = objectUrl;
+    link.href = url;
     link.download = selectedPackage.name;
 
     document.body.appendChild(link);
     link.click();
     link.remove();
 
-    status.textContent = 'Download started: ' + selectedPackage.name;
-
     setTimeout(() => {
-      URL.revokeObjectURL(objectUrl);
+      URL.revokeObjectURL(url);
     }, 60000);
   });
 
-  removeButton.addEventListener('click', async () => {
-    if (!db) return;
-
-    try {
-      await deletePackage();
-      selectedPackage = null;
-      updateInterface();
-    } catch (error) {
-      console.error(error);
-      status.textContent = 'Could not remove saved package.';
-    }
-  });
+  const secret = document.getElementById('transient-code');
 
   const observer = new IntersectionObserver(entries => {
-    if (revealUsed || !entries.some(entry => entry.isIntersecting)) return;
+    if (
+      revealUsed ||
+      !entries.some(entry => entry.isIntersecting)
+    ) return;
 
     revealUsed = true;
     observer.disconnect();
 
-    const delay = 1800 + Math.floor(Math.random() * 7200);
+    const delay = 1800 + Math.floor(
+      Math.random() * 7200
+    );
 
     setTimeout(() => {
       secret.classList.add('visible');
@@ -492,3 +450,4 @@
 
 </body>
 </html>
+```
