@@ -1,451 +1,964 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI WT8X — Minecraft Mod</title>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10120f">
+<title>CompanionMods — Minecraft Mod Library</title>
 <style>
-  :root {
-    --bg: #171a17;
-    --panel: #202620;
-    --panel2: #252d25;
-    --line: #394439;
-    --text: #d9dfd6;
-    --muted: #9ba69a;
-    --green: #83a96b;
-    --green2: #a5c58c;
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root {
+  --bg: #10120f;
+  --surface: #171a16;
+  --surface2: #1c201b;
+  --surface3: #232820;
+  --border: rgba(255,255,255,.075);
+  --text: #f0f2ec;
+  --muted: #858d80;
+  --green: #a5c58c;
+  --green2: #829f6d;
+  --danger: #c47e75;
+  --radius: 17px;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+button, input {
+  font: inherit;
+}
+button {
+  color: inherit;
+}
+::selection {
+  background: #829f6d;
+  color: #10120f;
+}
+/* BACKGROUND */
+.background-glow {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  top: -350px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #718b50;
+  opacity: .09;
+  filter: blur(130px);
+  pointer-events: none;
+  z-index: -1;
+}
+/* NAVIGATION */
+.navbar {
+  height: 76px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(16,18,15,.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+.nav-inner {
+  width: min(1120px, calc(100% - 48px));
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -.7px;
+}
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg,#a5c58c,#668451);
+  color: #172014;
+  font-size: 19px;
+  font-weight: 800;
+  box-shadow: 0 4px 20px #8eac7140;
+}
+.logo span {
+  color: var(--green);
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.nav-link {
+  font-size: 13px;
+  color: #a4ab9f;
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-link:hover {
+  color: white;
+}
+.nav-version {
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  padding: 7px 12px;
+  color: #9da794;
+  font-size: 11px;
+}
+/* MAIN */
+.container {
+  width: min(1120px, calc(100% - 48px));
+  margin: auto;
+}
+/* HERO */
+.hero {
+  padding: 83px 0 56px;
+  position: relative;
+}
+.hero-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--green);
+  background: #a5c58c0c;
+  border: 1px solid #a5c58c20;
+  padding: 7px 12px;
+  border-radius: 30px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.hero-label i {
+  width: 7px;
+  height: 7px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--green);
+}
+.hero h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(43px, 7vw, 76px);
+  letter-spacing: -4px;
+  line-height: 1.04;
+  font-weight: 600;
+  margin-top: 23px;
+}
+.hero h1 span {
+  color: var(--green);
+}
+.hero-description {
+  max-width: 440px;
+  color: var(--muted);
+  line-height: 1.8;
+  font-size: 14px;
+  margin-top: 18px;
+}
+.hero-bottom {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+.hero-stat {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #a0a99b;
+  font-size: 12px;
+}
+.hero-stat strong {
+  color: white;
+  font-size: 14px;
+}
+/* FEATURED */
+.featured {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #8da97838;
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse at 90% 10%,#829f6d23,transparent 50%),
+    linear-gradient(120deg,#20271e,#171c16);
+  padding: 29px;
+  margin-bottom: 65px;
+}
+.featured::after {
+  content: "WT8X";
+  position: absolute;
+  right: -10px;
+  bottom: -68px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(100px,20vw,210px);
+  font-weight: 700;
+  color: #ffffff05;
+  pointer-events: none;
+}
+.featured-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--green);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+}
+.featured-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  margin-top: 26px;
+  position: relative;
+  z-index: 1;
+}
+.featured h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(28px,4vw,40px);
+  letter-spacing: -1.6px;
+}
+.featured p {
+  font-size: 13px;
+  color: #9ba694;
+  margin-top: 8px;
+}
+.featured-meta {
+  display: flex;
+  gap: 17px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+.featured-meta span {
+  font-size: 11px;
+  color: #aab3a3;
+}
+.featured-action {
+  min-width: 170px;
+}
+.primary-button {
+  background: var(--green);
+  border: 1px solid #b4d09d;
+  color: #172014;
+  padding: 13px 20px;
+  border-radius: 9px;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+  transition: .2s;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+.primary-button:hover {
+  background: #b8d5a0;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px #a5c58c20;
+}
+.primary-button:active {
+  transform: scale(.98);
+}
+.primary-button svg {
+  width: 17px;
+  height: 17px;
+}
+.featured-action small {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  color: #7f8a78;
+  font-size: 10px;
+}
+/* LIBRARY */
+.library-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+.section-label {
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.library-header h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 29px;
+  letter-spacing: -1px;
+  margin-top: 7px;
+}
+.library-header p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 5px;
+}
+.search {
+  width: 235px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 13px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 9px;
+  transition: border .2s;
+}
+.search:focus-within {
+  border-color: #829f6d80;
+}
+.search svg {
+  width: 16px;
+  color: #778172;
+  flex-shrink: 0;
+}
+.search input {
+  width: 100%;
+  background: none;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 12px;
+  min-width: 0;
+}
+.search input::placeholder {
+  color: #697164;
+}
+/* FILTERS */
+.filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.filters::-webkit-scrollbar {
+  display: none;
+}
+.filter {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: #9ca496;
+  font-size: 11px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: .2s;
+}
+.filter:hover {
+  border-color: #a5c58c55;
+  color: white;
+}
+.filter.active {
+  background: #a5c58c17;
+  border-color: #a5c58c50;
+  color: var(--green);
+}
+/* MOD CARDS */
+.mods-grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 15px;
+}
+.mod-card {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  padding: 19px;
+  position: relative;
+  transition: border-color .25s, transform .25s, background .25s;
+  overflow: hidden;
+}
+.mod-card:hover {
+  border-color: #ffffff20;
+  transform: translateY(-3px);
+  background: #1a1e19;
+}
+.mod-card.available {
+  border-color: #a5c58c35;
+}
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.mod-icon {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--surface3);
+  font-size: 20px;
+  border: 1px solid var(--border);
+}
+.available .mod-icon {
+  background: #a5c58c15;
+  border-color: #a5c58c28;
+}
+.status {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .6px;
+  padding: 6px 9px;
+  border-radius: 30px;
+  text-transform: uppercase;
+}
+.status.available {
+  color: var(--green);
+  background: #a5c58c13;
+  border: 1px solid #a5c58c25;
+}
+.status.outdated {
+  color: #c38c83;
+  background: #c38c8310;
+  border: 1px solid #c38c8320;
+}
+.mod-card h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px;
+  letter-spacing: -.4px;
+  margin-top: 19px;
+}
+.mod-card .description {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.7;
+  min-height: 39px;
+  margin-top: 7px;
+}
+.card-footer {
+  border-top: 1px solid var(--border);
+  margin-top: 17px;
+  padding-top: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.card-version {
+  color: #879080;
+  font-size: 10px;
+}
+.card-download {
+  background: none;
+  border: 0;
+  color: #737c6e;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: not-allowed;
+}
+.available .card-download {
+  color: var(--green);
+  cursor: pointer;
+}
+.available .card-download:hover {
+  color: #d0e5bd;
+}
+.empty-results {
+  display: none;
+  text-align: center;
+  padding: 55px 15px;
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  color: var(--muted);
+  font-size: 13px;
+}
+/* FOOTER */
+.footer {
+  margin-top: 85px;
+  border-top: 1px solid var(--border);
+  padding: 30px 0 35px;
+}
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.footer-brand {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+.footer-brand span {
+  color: var(--green);
+}
+.footer p {
+  color: #737d70;
+  font-size: 10px;
+  margin-top: 5px;
+}
+.footer-right {
+  color: #737d70;
+  font-size: 10px;
+}
+/* DOWNLOAD TOAST */
+.toast {
+  position: fixed;
+  z-index: 50;
+  bottom: 25px;
+  left: 50%;
+  transform: translate(-50%,20px);
+  opacity: 0;
+  pointer-events: none;
+  background: #20271e;
+  border: 1px solid #a5c58c50;
+  padding: 13px 18px;
+  border-radius: 11px;
+  box-shadow: 0 15px 50px #0008;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #dce8d4;
+  font-size: 12px;
+  transition: .3s;
+  max-width: calc(100% - 32px);
+  white-space: nowrap;
+}
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%,0);
+}
+.toast-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+}
+/* RESPONSIVE */
+@media (max-width: 850px) {
+  .mods-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
   }
-
-  * { box-sizing: border-box; }
-
-  body {
-    margin: 0;
-    background: #111411;
-    color: var(--text);
-    font: 15px/1.6 Arial, Helvetica, sans-serif;
+  .hero {
+    padding-top: 65px;
   }
-
-  header {
-    background: #1d241d;
-    border-bottom: 1px solid #344034;
-    padding: 22px max(22px, calc((100% - 940px)/2));
+}
+@media (max-width: 600px) {
+  .container {
+    width: calc(100% - 32px);
   }
-
-  .brand {
-    color: var(--green2);
-    font-size: 13px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-weight: bold;
+  .nav-inner {
+    width: calc(100% - 32px);
   }
-
-  .nav {
-    margin-top: 9px;
-    color: #aeb8aa;
-    font-size: 13px;
+  .navbar {
+    height: 65px;
   }
-
-  main {
-    max-width: 940px;
-    margin: 38px auto 70px;
-    padding: 0 22px;
+  .logo {
+    font-size: 16px;
   }
-
-  .intro {
-    padding: 28px 30px;
-    background: linear-gradient(120deg,#273127,#202720);
-    border: 1px solid #3a4739;
-    border-radius: 5px;
+  .logo-icon {
+    width: 33px;
+    height: 33px;
   }
-
-  .eyebrow {
-    color: var(--green2);
-    font-size: 11px;
-    letter-spacing: 1.7px;
-    text-transform: uppercase;
+  .nav-right {
+    gap: 13px;
   }
-
-  h1 {
-    margin: 8px 0 4px;
-    font-size: clamp(30px,5vw,43px);
-    letter-spacing: -.8px;
-    font-weight: 600;
-  }
-
-  .subtitle {
-    color: #aeb8aa;
-    margin: 0;
-  }
-
-  .content {
-    display: grid;
-    grid-template-columns: minmax(0,1fr) 245px;
-    gap: 18px;
-    margin-top: 18px;
-  }
-
-  .panel {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    padding: 22px;
-  }
-
-  h2 {
-    margin: 0 0 12px;
-    color: #dfe7da;
-    font-size: 18px;
-    font-weight: 600;
-  }
-
-  p { margin: 0 0 13px; }
-
-  .muted { color: var(--muted); }
-
-  .meta {
-    display: grid;
-    grid-template-columns: 110px 1fr;
-    gap: 7px 12px;
-    font-size: 13px;
-  }
-
-  .meta span:nth-child(odd) {
-    color: var(--muted);
-  }
-
-  .download {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 11px 18px;
-    background: #78975f;
-    color: #10170e;
-    border: 1px solid #9bb783;
-    border-radius: 3px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 14px;
-  }
-
-  .download:hover {
-    background: #8aaa70;
-  }
-
-  .download:active {
-    background: #698653;
-  }
-
-  .notice {
-    margin-top: 18px;
-    padding: 12px 14px;
-    border-left: 3px solid #718b5e;
-    background: #1d251d;
-    color: #aeb9a8;
-    font-size: 13px;
-  }
-
-  footer {
-    margin-top: 26px;
-    padding: 17px 2px;
-    border-top: 1px solid #303a30;
-    color: #778174;
-    font-size: 12px;
-  }
-
-  #filePicker {
+  .nav-link {
     display: none;
   }
-
-  #transient-code {
-    margin-top: 25px;
-    min-height: 24px;
-    text-align: center;
-    color: #8d9b86;
-    font: 11px/1.4 Consolas, monospace;
-    letter-spacing: .5px;
-    opacity: 0;
-    transition: opacity .05s linear;
-    user-select: none;
+  .nav-version {
+    font-size: 9px;
+    padding: 6px 9px;
   }
-
-  #transient-code.visible {
-    opacity: .78;
+  .hero {
+    padding: 57px 0 39px;
   }
-
-  @media (max-width: 680px) {
-    .content {
-      grid-template-columns: 1fr;
-    }
-
-    main {
-      margin-top: 22px;
-    }
-
-    .intro {
-      padding: 23px 20px;
-    }
+  .hero h1 {
+    letter-spacing: -2.7px;
   }
+  .hero-description {
+    font-size: 13px;
+  }
+  .featured {
+    padding: 22px;
+    margin-bottom: 53px;
+  }
+  .featured-content {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .featured-action {
+    width: 100%;
+  }
+  .library-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .library-header h2 {
+    font-size: 26px;
+  }
+  .search {
+    width: 100%;
+  }
+  .mods-grid {
+    gap: 10px;
+  }
+  .mod-card {
+    padding: 14px;
+  }
+  .mod-icon {
+    width: 37px;
+    height: 37px;
+    font-size: 17px;
+  }
+  .status {
+    font-size: 8px;
+    padding: 5px 6px;
+  }
+  .mod-card h3 {
+    font-size: 15px;
+  }
+  .mod-card .description {
+    font-size: 10px;
+  }
+  .card-version,
+  .card-download {
+    font-size: 9px;
+  }
+  .footer-inner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .footer {
+    margin-top: 65px;
+  }
+  .toast {
+    bottom: 16px;
+    font-size: 11px;
+  }
+}
+@media (max-width: 350px) {
+  .container {
+    width: calc(100% - 24px);
+  }
+  .mods-grid {
+    grid-template-columns: 1fr;
+  }
+  .mod-card {
+    padding: 17px;
+  }
+  .hero h1 {
+    font-size: 41px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+  }
+}
 </style>
 </head>
-
 <body>
-
-<header>
-  <div class="brand">WT8X / Mod Archive</div>
-  <div class="nav">
-    Minecraft Java Edition &nbsp; / &nbsp;
-    Mod releases &nbsp; / &nbsp; AI WT8X
+<div class="background-glow"></div>
+<!-- NAVIGATION -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo" style="text-decoration:none;color:inherit">
+      <div class="logo-icon">C</div>
+      Companion<span>Mods</span>
+    </a>
+    <div class="nav-right">
+      <a href="#library" class="nav-link">Explore mods</a>
+      <a href="#about" class="nav-link">About</a>
+      <div class="nav-version">JAVA EDITION</div>
+    </div>
   </div>
-</header>
-
-<main>
-
-  <section class="intro">
-    <div class="eyebrow">Community build · Mod release</div>
-    <h1>AI WT8X</h1>
-    <p class="subtitle">
-      An experimental client-side addition for Minecraft.
+</nav>
+<main class="container">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-label">
+      <i></i>
+      Minecraft mod library
+    </div>
+    <h1>
+      Your world.<br>
+      <span>More possibilities.</span>
+    </h1>
+    <p class="hero-description">
+      Discover community-made modifications for Minecraft.
+      Browse projects, explore releases and find your next experience.
     </p>
+    <div class="hero-bottom">
+      <div class="hero-stat">
+        <strong>07</strong>
+        Available projects
+      </div>
+      <div class="hero-stat">
+        <strong>01</strong>
+        Active release
+      </div>
+      <div class="hero-stat">
+        <strong>1.21.1</strong>
+        Featured version
+      </div>
+    </div>
   </section>
-
-  <div class="content">
-
-    <section class="panel">
-      <h2>About this mod</h2>
-
-      <p>
-        AI WT8X is a small experimental mod currently being tested.
-        This page contains the latest packaged build and basic release information.
-      </p>
-
-      <p class="muted">
-        Some features may change between builds.
-        Make a backup of your world before testing unfamiliar mods.
-      </p>
-
-      <div class="notice">
-        Please check that the file matches your Minecraft installation
-        and mod loader before launching the game.
+  <!-- FEATURED MOD -->
+  <section class="featured">
+    <div class="featured-top">
+      <span>✦</span>
+      Featured release
+    </div>
+    <div class="featured-content">
+      <div>
+        <h2>AI WT8X</h2>
+        <p>
+          An experimental companion modification for Minecraft.
+        </p>
+        <div class="featured-meta">
+          <span>● Version 1.21.1</span>
+          <span>● Java Edition</span>
+          <span>● Experimental</span>
+        </div>
       </div>
-    </section>
-
-    <aside class="panel">
-
-      <h2>Release information</h2>
-
-      <div class="meta">
-        <span>Project</span><span>AI WT8X</span>
-        <span>Version</span><span>0.8.2-test</span>
-        <span>Build</span><span>0816</span>
-        <span>Platform</span><span>Java Edition</span>
-        <span>Status</span><span>Experimental</span>
+      <div class="featured-action">
+        <button class="primary-button" id="featuredDownload">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <path d="m7 10 5 5 5-5"/>
+            <path d="M12 15V3"/>
+          </svg>
+          Download mod
+        </button>
+        <small>WT8X-1-21-1.jar · Experimental</small>
       </div>
-
-      <button class="download" id="downloadBtn">
-        Download mod
-      </button>
-
-      <p class="muted" style="font-size:11px;margin-top:14px">
-        Package updated: 08 Nov 2026
-      </p>
-
-    </aside>
-
-  </div>
-
-  <footer>
-    AI WT8X Mod Archive · Independent project<br>
-    This page is an unofficial project download page.
-
-    <div id="transient-code" aria-hidden="true">weiv/Th62-0suqSpM8aKe8n87dt8VPKSa-iDP1/d/elif/moc.elgoog.evird//:sptth</div>
+    </div>
+  </section>
+  <!-- LIBRARY -->
+  <section id="library">
+    <div class="library-header">
+      <div>
+        <div class="section-label">The collection</div>
+        <h2>Explore modifications</h2>
+        <p>Browse the CompanionMods project library.</p>
+      </div>
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="m20 20-4-4"/>
+        </svg>
+        <input id="searchInput" type="search" placeholder="Search modifications..." autocomplete="off">
+      </div>
+    </div>
+    <div class="filters">
+      <button class="filter active" data-filter="all">All projects</button>
+      <button class="filter" data-filter="available">Available</button>
+      <button class="filter" data-filter="outdated">Outdated</button>
+    </div>
+    <div class="mods-grid" id="modsGrid">
+      <!-- WT8X -->
+      <article class="mod-card available" data-name="AI WT8X" data-status="available">
+        <div class="card-top">
+          <div class="mod-icon">◈</div>
+          <span class="status available">Available</span>
+        </div>
+        <h3>AI WT8X</h3>
+        <p class="description">Experimental companion modification.</p>
+        <div class="card-footer">
+          <span class="card-version">1.21.1</span>
+          <button class="card-download" data-download>DOWNLOAD ↗</button>
+        </div>
+      </article>
+      <!-- FAKE / UNAVAILABLE MODS -->
+      <article class="mod-card" data-name="Ambient Worlds" data-status="outdated">
+        <div class="card-top">
+          <div class="mod-icon">☼</div>
+          <span class="status outdated">Outdated</span>
+        </div>
+        <h3>Ambient Worlds</h3>
+        <p class="description">Environmental improvements and world effects.</p>
+        <div class="card-footer">
+          <span class="card-version">1.19.4</span>
+          <button class="card-download" disabled>UNAVAILABLE</button>
+        </div>
+      </article>
+      <article class="mod-card" data-name="Echo Companion" data-status="outdated">
+        <div class="card-top">
+          <div class="mod-icon">◉</div>
+          <span class="status outdated">Outdated</span>
+        </div>
+        <h3>Echo Companion</h3>
+        <p class="description">A companion system for your adventures.</p>
+        <div class="card-footer">
+          <span class="card-version">1.18.2</span>
+          <button class="card-download" disabled>UNAVAILABLE</button>
+        </div>
+      </article>
+      <article class="mod-card" data-name="Nature Expansion" data-status="outdated">
+        <div class="card-top">
+          <div class="mod-icon">♧</div>
+          <span class="status outdated">Outdated</span>
+        </div>
+        <h3>Nature Expansion</h3>
+        <p class="description">Additional natural elements and details.</p>
+        <div class="card-footer">
+          <span class="card-version">1.20.1</span>
+          <button class="card-download" disabled>UNAVAILABLE</button>
+        </div>
+      </article>
+      <article class="mod-card" data-name="Deep Structures" data-status="outdated">
+        <div class="card-top">
+          <div class="mod-icon">⌂</div>
+          <span class="status outdated">Outdated</span>
+        </div>
+        <h3>Deep Structures</h3>
+        <p class="description">Explore additional structures and locations.</p>
+        <div class="card-footer">
+          <span class="card-version">1.19.2</span>
+          <button class="card-download" disabled>UNAVAILABLE</button>
+        </div>
+      </article>
+      <article class="mod-card" data-name="Silent Steps" data-status="outdated">
+        <div class="card-top">
+          <div class="mod-icon">⌁</div>
+          <span class="status outdated">Outdated</span>
+        </div>
+        <h3>Silent Steps</h3>
+        <p class="description">Movement and ambient sound enhancements.</p>
+        <div class="card-footer">
+          <span class="card-version">1.20.1</span>
+          <button class="card-download" disabled>UNAVAILABLE</button>
+        </div>
+      </article>
+      <article class="mod-card" data-name="Old Horizons" data-status="outdated">
+        <div class="card-top">
+          <div class="mod-icon">◇</div>
+          <span class="status outdated">Outdated</span>
+        </div>
+        <h3>Old Horizons</h3>
+        <p class="description">An experimental exploration project.</p>
+        <div class="card-footer">
+          <span class="card-version">1.16.5</span>
+          <button class="card-download" disabled>UNAVAILABLE</button>
+        </div>
+      </article>
+    </div>
+    <div class="empty-results" id="emptyResults">
+      No modifications found.
+    </div>
+  </section>
+  <!-- FOOTER -->
+  <footer class="footer" id="about">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">
+          Companion<span>Mods</span>
+        </div>
+        <p>Independent Minecraft modification library.</p>
+      </div>
+      <div class="footer-right">
+        © 2026 CompanionMods. All rights reserved.
+      </div>
+    </div>
   </footer>
-
 </main>
-
-<input id="filePicker" type="file" accept=".jar">
-
+<div class="toast" id="toast">
+  <span class="toast-dot"></span>
+  <span>Download started successfully.</span>
+</div>
 <script>
 (() => {
-  const picker = document.getElementById('filePicker');
-  const button = document.getElementById('downloadBtn');
-
-  const DB_NAME = 'WT8X_ARCHIVE';
-  const DB_VERSION = 1;
-  const STORE_NAME = 'packages';
-  const PACKAGE_KEY = 'main_package';
-
-  let db = null;
-  let selectedPackage = null;
-  let revealUsed = false;
-
-  function openDatabase() {
-    return new Promise((resolve, reject) => {
-      const request = indexedDB.open(DB_NAME, DB_VERSION);
-
-      request.onupgradeneeded = () => {
-        const database = request.result;
-
-        if (!database.objectStoreNames.contains(STORE_NAME)) {
-          database.createObjectStore(STORE_NAME);
-        }
-      };
-
-      request.onsuccess = () => {
-        resolve(request.result);
-      };
-
-      request.onerror = () => {
-        reject(request.error);
-      };
+  const search = document.getElementById('searchInput');
+  const cards = [...document.querySelectorAll('.mod-card')];
+  const filters = [...document.querySelectorAll('.filter')];
+  const empty = document.getElementById('emptyResults');
+  const toast = document.getElementById('toast');
+  let currentFilter = 'all';
+  let toastTimer;
+  // FILTER AND SEARCH
+  function updateLibrary() {
+    const query = search.value.toLowerCase().trim();
+    let visible = 0;
+    cards.forEach(card => {
+      const name = card.dataset.name.toLowerCase();
+      const status = card.dataset.status;
+      const matchesSearch = name.includes(query);
+      const matchesFilter =
+        currentFilter === 'all' ||
+        currentFilter === status;
+      const show = matchesSearch && matchesFilter;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
     });
+    empty.style.display = visible === 0 ? 'block' : 'none';
   }
-
-  function savePackage(file) {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction(
-        STORE_NAME,
-        'readwrite'
-      );
-
-      const store = transaction.objectStore(STORE_NAME);
-
-      store.put({
-        blob: file,
-        name: file.name
-      }, PACKAGE_KEY);
-
-      transaction.oncomplete = resolve;
-      transaction.onerror = () => reject(transaction.error);
-      transaction.onabort = () => reject(transaction.error);
+  search.addEventListener('input', updateLibrary);
+  filters.forEach(filter => {
+    filter.addEventListener('click', () => {
+      filters.forEach(item => item.classList.remove('active'));
+      filter.classList.add('active');
+      currentFilter = filter.dataset.filter;
+      updateLibrary();
     });
-  }
-
-  function loadPackage() {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction(
-        STORE_NAME,
-        'readonly'
-      );
-
-      const request = transaction
-        .objectStore(STORE_NAME)
-        .get(PACKAGE_KEY);
-
-      request.onsuccess = () => {
-        resolve(request.result || null);
-      };
-
-      request.onerror = () => {
-        reject(request.error);
-      };
-    });
-  }
-
-  async function initialize() {
-    try {
-      db = await openDatabase();
-      selectedPackage = await loadPackage();
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async function handleFile(file) {
-    if (!file || !db) return;
-
-    try {
-      await savePackage(file);
-
-      selectedPackage = {
-        blob: file,
-        name: file.name
-      };
-
-    } catch (error) {
-      console.error(error);
-    }
-
-    picker.value = '';
-  }
-
-  document.addEventListener('keydown', event => {
-    if (event.key.toLowerCase() !== 'f') return;
-
-    const target = event.target;
-
-    if (
-      target &&
-      (
-        target.isContentEditable ||
-        ['INPUT', 'TEXTAREA'].includes(target.tagName)
-      )
-    ) return;
-
-    event.preventDefault();
-    picker.click();
   });
-
-  picker.addEventListener('change', () => {
-    const file = picker.files?.[0];
-
-    if (file) {
-      handleFile(file);
-    }
-  });
-
-  button.addEventListener('click', () => {
-    if (!selectedPackage) return;
-
-    const url = URL.createObjectURL(
-      selectedPackage.blob
-    );
-
+  // DOWNLOAD
+  function downloadWT8X() {
+    const blob = new Blob([], {
+      type: 'application/java-archive'
+    });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
-
     link.href = url;
-    link.download = selectedPackage.name;
-
+    link.download = 'WT8X-1-21-1.jar';
     document.body.appendChild(link);
     link.click();
     link.remove();
-
     setTimeout(() => {
       URL.revokeObjectURL(url);
-    }, 60000);
-  });
-
-  const secret = document.getElementById('transient-code');
-
-  const observer = new IntersectionObserver(entries => {
-    if (
-      revealUsed ||
-      !entries.some(entry => entry.isIntersecting)
-    ) return;
-
-    revealUsed = true;
-    observer.disconnect();
-
-    const delay = 1800 + Math.floor(
-      Math.random() * 7200
-    );
-
-    setTimeout(() => {
-      secret.classList.add('visible');
-
-      setTimeout(() => {
-        secret.classList.remove('visible');
-      }, 1000);
-
-    }, delay);
-
-  }, { threshold: 0.25 });
-
-  observer.observe(secret);
-
-  initialize();
-
+    }, 10000);
+    showToast();
+  }
+  document.getElementById('featuredDownload')
+    .addEventListener('click', downloadWT8X);
+  document.querySelectorAll('[data-download]')
+    .forEach(button => {
+      button.addEventListener('click', downloadWT8X);
+    });
+  // TOAST
+  function showToast() {
+    clearTimeout(toastTimer);
+    toast.classList.add('show');
+    toastTimer = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2800);
+  }
+  // INITIALIZE
+  updateLibrary();
 })();
 </script>
-
 </body>
 </html>
